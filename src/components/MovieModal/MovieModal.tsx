@@ -1,37 +1,50 @@
 import { useEffect } from 'react';
-import type { Movie } from '../../types/movie';
 import styles from './MovieModal.module.css';
+import type { Movie } from '../../types/movie';
 
 interface MovieModalProps {
   movie: Movie;
   onClose: () => void;
 }
 
-const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/original';
-
-const MovieModal = ({ movie, onClose }: MovieModalProps) => {
+export default function MovieModal({ movie, onClose }: MovieModalProps) {
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose();
-    };
-
-    const handleBackdropClick = (e: MouseEvent) => {
-      if ((e.target as HTMLElement).classList.contains(styles.backdrop)) {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
         onClose();
       }
     };
 
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('click', handleBackdropClick);
+    const disableScroll = () => {
+      document.body.style.overflow = 'hidden';
+    };
+
+    const enableScroll = () => {
+      document.body.style.overflow = 'auto';
+    };
+
+    disableScroll();
+    window.addEventListener('keydown', handleEscape);
 
     return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('click', handleBackdropClick);
+      enableScroll();
+      window.removeEventListener('keydown', handleEscape);
     };
   }, [onClose]);
 
+  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
   return (
-    <div className={styles.backdrop} role="dialog" aria-modal="true">
+    <div
+      className={styles.backdrop}
+      role="dialog"
+      aria-modal="true"
+      onClick={handleBackdropClick}
+    >
       <div className={styles.modal}>
         <button
           className={styles.closeButton}
@@ -41,7 +54,7 @@ const MovieModal = ({ movie, onClose }: MovieModalProps) => {
           &times;
         </button>
         <img
-          src={`${IMAGE_BASE_URL}${movie.backdrop_path}`}
+          src={`https://image.tmdb.org/t/p/original${movie.backdrop_path}`}
           alt={movie.title}
           className={styles.image}
         />
@@ -58,6 +71,4 @@ const MovieModal = ({ movie, onClose }: MovieModalProps) => {
       </div>
     </div>
   );
-};
-
-export default MovieModal;
+}

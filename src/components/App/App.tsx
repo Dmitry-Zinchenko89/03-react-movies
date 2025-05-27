@@ -18,7 +18,7 @@ export default function App() {
   const handleSearch = async (query: string) => {
     setLoading(true);
     setError(false);
-    setMovies([]); // очищення попередніх результатів
+    setMovies([]); 
 
     try {
       const results = await fetchMovies(query);
@@ -51,7 +51,7 @@ export default function App() {
   return (
     <>
       <Toaster position="top-right" />
-      <SearchBar action={handleSearch} />
+      <SearchBar onSubmit={handleSearch} />
 
       {loading && <Loader />}
       {error && <ErrorMessage />}

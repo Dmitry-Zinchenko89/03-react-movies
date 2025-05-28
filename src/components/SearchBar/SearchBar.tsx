@@ -3,10 +3,10 @@ import toast from 'react-hot-toast';
 import styles from './SearchBar.module.css';
 
 interface SearchBarProps {
-  onSubmit: (query: string) => void;
+   action: (formData: FormData) => void;
 }
 
-export default function SearchBar({ onSubmit }: SearchBarProps) {
+export default function SearchBar({ action }: SearchBarProps) {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -19,7 +19,7 @@ export default function SearchBar({ onSubmit }: SearchBarProps) {
       return;
     }
 
-    onSubmit(query);
+    action(formData);
     form.reset(); 
   };
 

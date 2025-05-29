@@ -30,8 +30,8 @@ export default function App() {
       const results = await fetchMovies(query);
 setMovies(results);
     }
-    catch (err) {
-  console.error('Error fetching movies:', err);
+    catch  {
+  setError(true);
   toast.error('Something went wrong');
 }
      finally {
@@ -52,7 +52,7 @@ setMovies(results);
   return (
     <>
       <Toaster position="top-right" />
-      <SearchBar action={handleSearch} />
+      <SearchBar onSubmit={handleSearch} />
 
       {loading && <Loader />}
       {error && <ErrorMessage />}

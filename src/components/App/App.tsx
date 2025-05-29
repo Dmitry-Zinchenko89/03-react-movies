@@ -15,8 +15,8 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const handleSearch = async (formData: FormData) => {
-    const query = (formData.get('query') as string).trim();
+  const handleSearch = async (query: string) => {
+    
     
      if (!query) {
       toast.error('Please enter your search query.');
